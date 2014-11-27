@@ -1,0 +1,13 @@
+{
+  "name": "dynamo-sync",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jed/dynamo-sync.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "deep-equal": "^0.2.1"
+  }
+}
