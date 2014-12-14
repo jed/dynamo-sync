@@ -10,7 +10,7 @@ Example
 var aws = require("aws-sdk")
 var Table = require("dynamo-sync")
 
-var db = new aws.DynamoDB
+var db = new aws.DynamoDB({region: "us-east-1"})
 var table = new Table(db, "myTable")
 
 var data = [
