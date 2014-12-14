@@ -8,7 +8,7 @@ Example
 
 ```javascript
 var aws = require("aws-sdk")
-var Table = require("dynamo-sync").Table
+var Table = require("dynamo-sync")
 
 var db = new aws.DynamoDB
 var table = Table(db, "myTable")
