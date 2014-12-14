@@ -11,7 +11,7 @@ var aws = require("aws-sdk")
 var Table = require("dynamo-sync")
 
 var db = new aws.DynamoDB
-var table = Table(db, "myTable")
+var table = new Table(db, "myTable")
 
 var data = [
   {id: 1, name: "Jed"},
