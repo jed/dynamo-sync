@@ -10,6 +10,8 @@ Table.prototype.push = function(local, cb) {
   var name = this.name
 
   this.diff(local, function(err, diff) {
+    if (err) return cb(err)
+
     if (!diff.length) return cb(null, {changeCount: 0})
 
     var ops = diff.map(function(pair) {
