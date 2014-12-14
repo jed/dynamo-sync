@@ -6,6 +6,7 @@ function Table(db, name) {
 }
 
 Table.prototype.push = function(local, cb) {
+  var db = this.db
   var name = this.name
 
   this.diff(local, function(err, diff) {
@@ -47,7 +48,7 @@ Table.prototype.push = function(local, cb) {
 }
 
 Table.prototype.load = function(cb) {
-  db.describeTable({TableName: this.name}, function(err, data) {
+  this.db.describeTable({TableName: this.name}, function(err, data) {
     if (err) return cb(err)
 
     var schema = data.Table.KeySchema.map(function(item) {
@@ -85,6 +86,8 @@ Table.prototype.diff = function(local, cb) {
 }
 
 Table.prototype.pull = function(local, cb) {
+  var db = this.db
+
   local.length = 0
 
   var opts = {TableName: this.name}
