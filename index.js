@@ -15,10 +15,19 @@ Table.prototype.push = function(local, cb) {
     if (!diff.length) return cb(null, {changeCount: 0})
 
     var ops = diff.map(function(pair) {
-      return pair[0]
-        ? {PutRequest: {Item: serialize(pair[0]).M}}
-        : {DeleteRequest: {Key: {path: serialize(pair[1].path)}}}
-    })
+      if (pair[0]) return {
+        PutRequest: {Item: serialize(pair[0]).M}
+      }
+
+      var key = this.schema.reduce(function(acc, key) {
+        acc[key] = pair[1][key]
+        return acc
+      }, {})
+
+      return {
+        DeleteRequest: {Key: serialize(key).M}
+      }
+    }, this)
 
     var batches = ops.reduce(function(acc, op, i) {
       if (!(i % 25)) {
@@ -46,14 +55,14 @@ Table.prototype.push = function(local, cb) {
         write()
       })
     }()
-  })
+  }.bind(this))
 }
 
 Table.prototype.load = function(cb) {
   this.db.describeTable({TableName: this.name}, function(err, data) {
     if (err) return cb(err)
 
-    var schema = data.Table.KeySchema.map(function(item) {
+    var schema = this.schema = data.Table.KeySchema.map(function(item) {
       return item.AttributeName
     })
 
